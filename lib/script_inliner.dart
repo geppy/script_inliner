@@ -5,9 +5,8 @@ import 'dart:async' show Future;
 import 'package:html5lib/parser.dart' show parse;
 import 'package:code_transformers/assets.dart' show uriToAssetId;
 
-/// Finds script tags that have data-pub-inline attributes, and inlines
-/// the contents. The src attribute URL must be reachable by pub's build
-/// system.
+/// Finds script tags, and inlines the contents. The src attribute URL must be
+/// reachable by pub's build system.
 class ScriptInliningTransformer extends Transformer {
   ScriptInliningTransformer.asPlugin();
 
@@ -20,8 +19,7 @@ class ScriptInliningTransformer extends Transformer {
 
       // attribute selectors don't work yet, do it manually
       var processing = document.querySelectorAll('script').where((tag) {
-        return tag.attributes['data-pub-inline'] != null &&
-               tag.attributes['src'] != null;
+        return tag.attributes['src'] != null;
       }).map((tag) {
         var src = tag.attributes['src'];
         var srcAssetId = uriToAssetId(id, src, transform.logger, tag.sourceSpan);
